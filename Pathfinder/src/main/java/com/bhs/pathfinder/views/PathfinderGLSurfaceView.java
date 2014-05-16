@@ -26,6 +26,8 @@ public class PathfinderGLSurfaceView extends GLSurfaceView {
     public PathfinderGLSurfaceView(Context context){
         super(context);
 
+        this.userInputListener = (UserInputListener)context;
+
         setEGLContextClientVersion(2);
 
         super.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);

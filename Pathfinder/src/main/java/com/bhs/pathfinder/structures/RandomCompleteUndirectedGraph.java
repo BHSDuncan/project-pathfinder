@@ -46,8 +46,16 @@ public class RandomCompleteUndirectedGraph extends Graph {
         float y = 0;
 
         while (!done) {
-            x = random.nextFloat() * 2 - 1;
-            y = random.nextFloat() * 2 - 1;
+            boolean haveFloat = false;
+
+            while (!haveFloat) {
+                x = random.nextFloat() * 2 - 1;
+                y = random.nextFloat() * 2 - 1;
+
+                if (Math.abs(x) < 1 - this.radius && Math.abs(y) < 1 - this.radius) {
+                    haveFloat = true;
+                }
+            }
 
             int numSafeX = 0;
             int numSafeY = 0;

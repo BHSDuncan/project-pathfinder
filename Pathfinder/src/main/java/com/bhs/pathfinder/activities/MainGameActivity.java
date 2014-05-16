@@ -30,6 +30,6 @@ public class MainGameActivity extends Activity implements UserInputListener {
 
     @Override
     public void handleTap(float x, float y) {
-
+        System.out.println("Tap!");
     }
 }
