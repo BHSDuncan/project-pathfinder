@@ -25,7 +25,7 @@ public class Line extends Shape {
 
     private FloatBuffer vertexBuffer;
 
-    private int mProgram;
+    private int mProgram = -1;
     private int mPositionHandle;
     private int mColorHandle;
     private int mMVPMatrixHandle;
@@ -64,14 +64,18 @@ public class Line extends Shape {
         buffer = new float[6];
 
         fillBuffers();
+    }
 
-        int vertexShader = PathfinderGLSurfaceViewRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-        int fragmentShader = PathfinderGLSurfaceViewRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+    public void init() {
+        if (this.mProgram == -1) {
+            int vertexShader = PathfinderGLSurfaceViewRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+            int fragmentShader = PathfinderGLSurfaceViewRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL ES Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);                  // creates OpenGL ES program executables
+            mProgram = GLES20.glCreateProgram();             // create empty OpenGL ES Program
+            GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+            GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+            GLES20.glLinkProgram(mProgram);                  // creates OpenGL ES program executables
+        }
     }
 
     public void draw() {
