@@ -1,22 +1,27 @@
 package com.bhs.pathfinder.views.shapes;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import android.opengl.GLES20;
 
 import com.bhs.pathfinder.views.PathfinderGLSurfaceViewRenderer;
 
-/**
- * Created by duncan on 5/15/2014.
- */
-public class Circle extends Shape {
-    private int vertexCount = 180;
-    private float radius = 0.5f;
-    private float center_x = 0.0f;
-    private float center_y = 0.0f;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
-    private float buffer[] = new float[vertexCount * 3]; // (x,y) for each vertex
+/**
+ * Created by Duncan on 16/05/2014.
+ */
+public class Line extends Shape {
+
+    private static final int COORDS_PER_VERTEX = 3;
+
+    private final int vertexStride = COORDS_PER_VERTEX * 4;
+
+    private float startX;
+    private float startY;
+    private float endX;
+    private float endY;
+    private float width;
 
     private FloatBuffer vertexBuffer;
 
@@ -25,11 +30,18 @@ public class Circle extends Shape {
     private int mColorHandle;
     private int mMVPMatrixHandle;
 
-    // Shader code
+    private int vertexCount;
+    private float buffer[];
+    float color[] = { 100.0f, 100.0f, 100.0f, 1.0f };
+
     private final String vertexShaderCode =
-            "attribute vec4 vPosition;" +
+            // This matrix member variable provides a hook to manipulate
+            // the coordinates of the objects that use this vertex shader
             "uniform mat4 uMVPMatrix;" +
+
+                    "attribute vec4 vPosition;" +
                     "void main() {" +
+                    // the matrix must be included as a modifier of gl_Position
                     "  gl_Position = uMVPMatrix * vPosition;" +
                     "}";
 
@@ -40,23 +52,16 @@ public class Circle extends Shape {
                     "  gl_FragColor = vColor;" +
                     "}";
 
+    public Line(float startX, float startY, float endX, float endY, float width) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+        this.width = width;
 
-    public Circle() {
-        fillBuffers();
+        this.vertexCount = 2;
 
-        int vertexShader = PathfinderGLSurfaceViewRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-        int fragmentShader = PathfinderGLSurfaceViewRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
-
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL ES Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);                  // creates OpenGL ES program executables
-    }
-
-    public Circle(float x, float y, float radius) {
-        this.center_x = x;
-        this.center_y = y;
-        this.radius = radius;
+        buffer = new float[6];
 
         fillBuffers();
 
@@ -70,12 +75,12 @@ public class Circle extends Shape {
     }
 
     public void draw() {
-        // unimplemented for now
+
     }
 
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL ES environment
-        GLES20.glUseProgram(mProgram);
+        GLES20.glUseProgram(this.mProgram);
 
         // get handle to vertex shader's vPosition member
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
@@ -84,15 +89,14 @@ public class Circle extends Shape {
         GLES20.glEnableVertexAttribArray(mPositionHandle);
 
         // Prepare the triangle coordinate data
-        GLES20.glVertexAttribPointer(mPositionHandle, 3,
+        GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX,
                 GLES20.GL_FLOAT, false,
-                12, vertexBuffer);
+                vertexStride, vertexBuffer);
 
         // get handle to fragment shader's vColor member
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        float[] color = {0f, 100f, 0f, 1f};
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix
@@ -101,8 +105,8 @@ public class Circle extends Shape {
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 
-        // Draw the circle
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, vertexCount);
+        // Draw the triangle
+        GLES20.glDrawArrays(GLES20.GL_LINES, 0, vertexCount);
 
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(mPositionHandle);
@@ -112,25 +116,14 @@ public class Circle extends Shape {
         int idx = 0;
 
         //center vertex for triangle fan
-        buffer[idx++] = center_x;
-        buffer[idx++] = center_y;
-        buffer[idx++] = 0;
+        buffer[idx++] = this.startX;
+        buffer[idx++] = this.startY;
+        buffer[idx++] = -0.1f;
+        buffer[idx++] = this.endX;
+        buffer[idx++] = this.endY;
+        buffer[idx++] = -0.1f;
 
-        //outer vertices of the circle
-        int outerVertexCount = vertexCount - 1;
-
-        for (int i = 0; i < outerVertexCount; ++i) {
-            float percent = (i / (float) (outerVertexCount - 1));
-            float rad = percent * 2 * (float) Math.PI;
-
-            //vertex position
-            float outer_x = center_x + radius * (float)Math.cos(rad);
-            float outer_y = center_y + radius * (float)Math.sin(rad);
-
-            buffer[idx++] = outer_x;
-            buffer[idx++] = outer_y;
-            buffer[idx++] = 0;
-        }
+        this.vertexCount = this.buffer.length;
 
         fillFloatBuffer();
     }
