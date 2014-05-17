@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Pathfinder.iml" filepath="$PROJECT_DIR$/Pathfinder.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Pathfinder/Pathfinder-Pathfinder.iml" filepath="$PROJECT_DIR$/Pathfinder/Pathfinder-Pathfinder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-pathfinder.iml" filepath="$PROJECT_DIR$/project-pathfinder.iml" />
     </modules>
   </component>
 </project>

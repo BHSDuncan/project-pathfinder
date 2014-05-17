@@ -80,7 +80,11 @@ public class Circle extends Shape {
     public float getY() {
         return this.centreY;
     }
-    
+
+    public float getRadius() {
+        return this.radius;
+    }
+
     public void draw() {
         // unimplemented for now
     }
@@ -104,7 +108,7 @@ public class Circle extends Shape {
         mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        float[] color = {0f, 100f, 0f, 1f};
+        float[] color = this.getColour();
         GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix

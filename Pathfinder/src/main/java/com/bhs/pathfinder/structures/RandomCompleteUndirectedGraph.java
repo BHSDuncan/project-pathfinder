@@ -29,10 +29,16 @@ public class RandomCompleteUndirectedGraph extends Graph {
 
     private void generateVertices() {
         for (int i = 0; i < this.numVertices; i++) {
-            // TODO: randomize the locations and check we don't have any overlaps
             float[] point = this.generateSafePoint();
 
             Vertex v = new Vertex(point[0], point[1], radius);
+
+            if (i == 0) {
+                v.setVertexState(Vertex.VERTEX_STATE.START);
+            } else if (i == this.numVertices - 1) {
+                v.setVertexState(Vertex.VERTEX_STATE.END);
+            }
+
             this.addVertex(v);
         }
     }

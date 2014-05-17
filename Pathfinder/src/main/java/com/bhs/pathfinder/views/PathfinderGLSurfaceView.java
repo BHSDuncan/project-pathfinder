@@ -30,7 +30,7 @@ public class PathfinderGLSurfaceView extends GLSurfaceView {
 
         setEGLContextClientVersion(2);
 
-        super.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
+        super.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
         this.renderer = new PathfinderGLSurfaceViewRenderer();
 
@@ -44,6 +44,10 @@ public class PathfinderGLSurfaceView extends GLSurfaceView {
         this.graph = graph;
 
         this.sendGraphToRenderer();
+    }
+
+    public PathfinderGLSurfaceViewRenderer getRenderer() {
+        return this.renderer;
     }
 
     private void sendGraphToRenderer() {
@@ -65,6 +69,7 @@ public class PathfinderGLSurfaceView extends GLSurfaceView {
                 break;
             case MotionEvent.ACTION_UP:
                 this.userInputListener.handleTap(this.curX, this.curY);
+                requestRender();
         }
 
         return true;

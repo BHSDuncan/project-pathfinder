@@ -15,40 +15,36 @@ import com.bhs.pathfinder.views.shapes.Shape;
  * Created by duncan on 5/15/2014.
  */
 public class PathfinderGLSurfaceViewRenderer implements GLSurfaceView.Renderer {
-    private Circle mCircle1;
-    private Circle mCircle2;
-    private Circle mCircle3;
-    private Circle mCircle4;
-    private Circle mCircle5;
-
-    private Line mLine12;
-    private Line mLine23;
-    private Line mLine34;
-    private Line mLine45;
-
     private Vector<Shape> shapes = new Vector<Shape>();
 
     private float[] mProjectionMatrix = new float[16];
     private float[] mViewMatrix = new float[16];
     private float[] mMVPMatrix = new float[16];
 
+    private int screenW = -1;
+    private int screenH = -1;
+
+    public int getScreenW() {
+        return this.screenW;
+    }
+
+    public int getScreenH() {
+        return this.screenH;
+    }
+
+    public float[] getProjectionM() {
+        return this.mProjectionMatrix;
+    }
+
+    public float[] getViewM() {
+        return this.mViewMatrix;
+    }
+
     public void addShape(Shape s) {
         this.shapes.add(s);
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        /*
-        mCircle1 = new Circle(0.5f, 0f, 0.1f);
-        mCircle2 = new Circle(0.5f, 0.5f, 0.1f);
-        mCircle3 = new Circle(-0.5f, 0f, 0.1f);
-        mCircle4 = new Circle(-0.5f, -0.5f, 0.1f);
-        mCircle5 = new Circle(0.1f, -0.25f, 0.1f);
-
-        mLine12 = new Line(0.5f, 0f, 0.5f, 0.5f, 0.5f);
-        mLine23 = new Line(0.5f, 0.5f, -0.5f, 0f, 0.5f);
-        mLine34 = new Line(-0.5f, 0f, -0.5f, -0.5f, 0.5f);
-        mLine45 = new Line(-0.5f, -0.5f, 0.1f, -0.25f, 0.5f);
-*/
         this.initShapes();
 
         // Set the background frame color
@@ -81,22 +77,12 @@ public class PathfinderGLSurfaceViewRenderer implements GLSurfaceView.Renderer {
         for (Shape s : this.shapes) {
             s.draw(mMVPMatrix);
         }
-
-/*
-        mCircle1.draw(mMVPMatrix);
-        mCircle2.draw(mMVPMatrix);
-        mCircle3.draw(mMVPMatrix);
-        mCircle4.draw(mMVPMatrix);
-        mCircle5.draw(mMVPMatrix);
-
-        mLine12.draw(mMVPMatrix);
-        mLine23.draw(mMVPMatrix);
-        mLine34.draw(mMVPMatrix);
-        mLine45.draw(mMVPMatrix);
-        */
     }
 
     public void onSurfaceChanged(GL10 unused, int width, int height) {
+        this.screenW = width;
+        this.screenH = height;
+
         GLES20.glViewport(0, 0, width, height);
 
         float ratio = (float) width / height;

@@ -9,10 +9,6 @@ public abstract class Graph {
     protected Vector<Vertex> vertices = new Vector<Vertex>();
     protected Vector<Edge> edges = new Vector<Edge>();
 
-    public Graph() {
-
-    }
-
     public void addVertex(Vertex v) {
         this.vertices.add(v);
     }
@@ -35,5 +31,37 @@ public abstract class Graph {
 
     public Vector<Edge> getEdges() {
         return this.edges;
+    }
+
+    public Vertex findVertex(float x, float y) {
+        Vertex toReturn = null;
+
+        for (Vertex v : this.vertices) {
+            float left = v.getX() - v.getRadius();
+            float right = v.getX() + v.getRadius();
+            float top = v.getY() + v.getRadius();
+            float bottom = v.getY() - v.getRadius();
+
+            System.out.println("For this vertex:");
+
+            if (x >= left)
+                System.out.println("GOOD LEFT");
+
+            if (x <= right)
+                System.out.println("GOOD RIGHT");
+
+            if (y >= bottom)
+                System.out.println("GOOD BOTTOM");
+
+            if (y <= top)
+                System.out.println("GOOD TOP");
+
+            if (x >= left && x <= right && y >= bottom && y <= top) {
+                System.out.println("Returning this vertex!");
+                toReturn = v;
+            }
+        }
+
+        return toReturn;
     }
 }
