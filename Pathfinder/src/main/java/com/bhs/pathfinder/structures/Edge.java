@@ -10,11 +10,21 @@ public class Edge {
     private Vertex from;
     private Vertex to;
 
+    private int weight = 0;
+
     public Edge(Vertex from, Vertex to) {
         this.from = from;
         this.to = to;
 
         graphic = new Line(from.getX(), from.getY(), to.getX(), to.getY(), 0.1f);
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return this.weight;
     }
 
     public Line getGraphic() {

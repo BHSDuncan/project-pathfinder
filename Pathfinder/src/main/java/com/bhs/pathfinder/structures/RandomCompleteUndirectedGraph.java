@@ -11,6 +11,17 @@ public class RandomCompleteUndirectedGraph extends Graph {
 
     private float radius = 0.1f;
 
+    private int maxEdgeWeight = 0;
+
+    public RandomCompleteUndirectedGraph() {
+        Random random = new Random();
+        this.maxEdgeWeight = random.nextInt();
+    }
+
+    public RandomCompleteUndirectedGraph(int maxEdgeWeight) {
+        this.maxEdgeWeight = maxEdgeWeight;
+    }
+
     public void init(int numVertices) throws IllegalArgumentException {
         if (numVertices < 2) {
             throw new IllegalArgumentException("Need at least 2 vertices.");
@@ -92,6 +103,8 @@ public class RandomCompleteUndirectedGraph extends Graph {
     }
 
     private void generateEdges() {
+        Random random = new Random();
+
         for (Vertex v : this.vertices) {
             for (int i = 0; i < this.vertices.size(); i++) {
                 Vertex v2 = this.vertices.get(i);
@@ -101,6 +114,7 @@ public class RandomCompleteUndirectedGraph extends Graph {
                 }
 
                 Edge e = new Edge(v, v2);
+                e.setWeight(random.nextInt(this.maxEdgeWeight));
                 this.addEdge(e);
             }
         }
