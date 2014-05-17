@@ -15,7 +15,7 @@ public class RandomCompleteUndirectedGraph extends Graph {
 
     public RandomCompleteUndirectedGraph() {
         Random random = new Random();
-        this.maxEdgeWeight = random.nextInt();
+        this.maxEdgeWeight = Math.abs(random.nextInt());
     }
 
     public RandomCompleteUndirectedGraph(int maxEdgeWeight) {

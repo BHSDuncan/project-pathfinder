@@ -2,6 +2,7 @@ package com.bhs.pathfinder.activities;
 
 import com.bhs.pathfinder.interfaces.UserInputListener;
 import com.bhs.pathfinder.structures.Graph;
+import com.bhs.pathfinder.structures.HexagonalConnectedUndirectedGraph;
 import com.bhs.pathfinder.structures.RandomCompleteUndirectedGraph;
 import com.bhs.pathfinder.structures.Vertex;
 import com.bhs.pathfinder.views.PathfinderGLSurfaceView;
@@ -22,12 +23,14 @@ public class MainGameActivity extends Activity implements UserInputListener {
 
         mGLView = new PathfinderGLSurfaceView(this);
 
-        RandomCompleteUndirectedGraph randGraph = new RandomCompleteUndirectedGraph();
-        randGraph.init(5);
+        //RandomCompleteUndirectedGraph randGraph = new RandomCompleteUndirectedGraph();
+        //randGraph.init(5);
+        HexagonalConnectedUndirectedGraph hGraph = new HexagonalConnectedUndirectedGraph(50);
+        hGraph.init();
 
-        mGLView.init(randGraph);
+        mGLView.init(hGraph);
 
-        this.graph = randGraph;
+        this.graph = hGraph;
 
         setContentView(mGLView);
     }

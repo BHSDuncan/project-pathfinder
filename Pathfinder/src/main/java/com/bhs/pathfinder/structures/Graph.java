@@ -42,22 +42,7 @@ public abstract class Graph {
             float top = v.getY() + v.getRadius();
             float bottom = v.getY() - v.getRadius();
 
-            System.out.println("For this vertex:");
-
-            if (x >= left)
-                System.out.println("GOOD LEFT");
-
-            if (x <= right)
-                System.out.println("GOOD RIGHT");
-
-            if (y >= bottom)
-                System.out.println("GOOD BOTTOM");
-
-            if (y <= top)
-                System.out.println("GOOD TOP");
-
             if (x >= left && x <= right && y >= bottom && y <= top) {
-                System.out.println("Returning this vertex!");
                 toReturn = v;
             }
         }
