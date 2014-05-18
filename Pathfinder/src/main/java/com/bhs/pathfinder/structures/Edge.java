@@ -27,6 +27,14 @@ public class Edge {
         return this.weight;
     }
 
+    public Vertex getFrom() {
+        return this.from;
+    }
+
+    public Vertex getTo() {
+        return this.to;
+    }
+
     public Line getGraphic() {
         return this.graphic;
     }

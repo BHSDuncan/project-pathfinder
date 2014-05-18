@@ -33,6 +33,27 @@ public abstract class Graph {
         return this.edges;
     }
 
+    public Vertex getStartVertex() {
+        return this.getVertexByState(Vertex.VERTEX_STATE.START);
+    }
+
+    public Vertex getEndVertex() {
+        return this.getVertexByState(Vertex.VERTEX_STATE.END);
+    }
+
+    private Vertex getVertexByState(Vertex.VERTEX_STATE vState) {
+        Vertex vRet = null;
+
+        for (Vertex v : this.vertices) {
+            if (v.getVertexState() == vState) {
+                vRet = v;
+                break;
+            }
+        }
+
+        return vRet;
+    }
+
     public Vertex findVertex(float x, float y) {
         Vertex toReturn = null;
 
