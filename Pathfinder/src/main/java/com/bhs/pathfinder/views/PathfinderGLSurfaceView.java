@@ -32,7 +32,7 @@ public class PathfinderGLSurfaceView extends GLSurfaceView {
 
         super.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 
-        this.renderer = new PathfinderGLSurfaceViewRenderer();
+        this.renderer = new PathfinderGLSurfaceViewRenderer(context);
 
         // Set the Renderer for drawing on the GLSurfaceView
         setRenderer(this.renderer);

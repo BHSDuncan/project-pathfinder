@@ -1,5 +1,6 @@
 package com.bhs.pathfinder.views;
 
+import android.content.Context;
 import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -7,9 +8,8 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 import java.util.Vector;
 
-import com.bhs.pathfinder.views.shapes.Circle;
-import com.bhs.pathfinder.views.shapes.Line;
 import com.bhs.pathfinder.views.shapes.Shape;
+import com.bhs.pathfinder.views.text.GLText;
 
 /**
  * Created by duncan on 5/15/2014.
@@ -23,6 +23,18 @@ public class PathfinderGLSurfaceViewRenderer implements GLSurfaceView.Renderer {
 
     private int screenW = -1;
     private int screenH = -1;
+
+    private GLText glText;                             // A GLText Instance
+    private Context context;                           // Context (from Activity)
+
+    public PathfinderGLSurfaceViewRenderer() {
+        super();
+    }
+
+    public PathfinderGLSurfaceViewRenderer(Context context) {
+        super();
+        this.context = context;
+    }
 
     public int getScreenW() {
         return this.screenW;
@@ -56,6 +68,12 @@ public class PathfinderGLSurfaceViewRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthFunc( GLES20.GL_LEQUAL );
         GLES20.glDepthMask( true );
         GLES20.glDepthRangef(1f, -1f  );
+
+        glText = new GLText(context.getAssets());
+        glText.load( "Roboto-Regular.ttf", 14, 2, 2 );
+
+        GLES20.glEnable(GLES20.GL_BLEND);
+        GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     private void initShapes() {
@@ -77,6 +95,10 @@ public class PathfinderGLSurfaceViewRenderer implements GLSurfaceView.Renderer {
         for (Shape s : this.shapes) {
             s.draw(mMVPMatrix);
         }
+
+        glText.begin(1.0f, 1.0f, 1.0f, 1.0f, this.mMVPMatrix);
+        glText.drawC("Edge", 0.5f, 0.5f, 0);
+        glText.end();
     }
 
     public void onSurfaceChanged(GL10 unused, int width, int height) {
@@ -90,6 +112,18 @@ public class PathfinderGLSurfaceViewRenderer implements GLSurfaceView.Renderer {
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 2, 7);
+        //Matrix.frustumM(mProjectionMatrix, 0, -1, 1, -1/ratio, 1/ratio, 1, 10);
+
+        int useForOrtho = Math.min(width, height);
+
+        //TODO: Is this wrong?
+        /*
+        Matrix.orthoM(this.mViewMatrix, 0,
+                -useForOrtho/2,
+                useForOrtho/2,
+                -useForOrtho/2,
+                useForOrtho/2, 0.1f, 100f);
+                */
     }
 
     public static int loadShader(int type, String shaderCode){

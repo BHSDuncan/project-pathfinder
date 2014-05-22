@@ -122,10 +122,10 @@ public class Line extends Shape {
         //center vertex for triangle fan
         buffer[idx++] = this.startX;
         buffer[idx++] = this.startY;
-        buffer[idx++] = -0.1f;
+        buffer[idx++] = -0.01f;
         buffer[idx++] = this.endX;
         buffer[idx++] = this.endY;
-        buffer[idx++] = -0.1f;
+        buffer[idx++] = -0.01f;
 
         this.vertexCount = this.buffer.length;
 

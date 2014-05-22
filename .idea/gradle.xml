@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\Duncan\Documents\GitHub\project-pathfinder" />
-            <option value="C:\Users\Duncan\Documents\GitHub\project-pathfinder\Pathfinder" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Pathfinder" />
           </set>
         </option>
       </GradleProjectSettings>
